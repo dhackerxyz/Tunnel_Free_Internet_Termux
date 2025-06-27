@@ -1,0 +1,19 @@
+{
+  "_metadata": {
+    "version": "1.0.0", 
+    "created": "2025-06-27",
+    "description": "AI Auto Tunneler - Scan results database"
+  },
+  "_schema": {
+    "scan_results": [
+      {
+        "type": "string - 'sni' or 'ssh'",
+        "timestamp": "string - ISO timestamp",
+        "domain/host": "string - Scanned target",
+        "status": "string - 'active', 'inactive', 'error'",
+        "response_time": "number - Response time in ms",
+        "additional_data": "object - Type-specific data"
+      }
+    ]
+  }
+}

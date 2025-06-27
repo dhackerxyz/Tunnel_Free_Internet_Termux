@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🤖 AI Auto Tunneler - Termux Free Internet</title>
+    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiQUkgQXV0byBUdW5uZWxlciIsInNob3J0X25hbWUiOiJBSVR1bm5lbCIsImRpc3BsYXkiOiJzdGFuZGFsb25lIn0=">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>🤖 AI Auto Tunneler</h1>
+            <p>Termux Free Internet with AI Detection</p>
+            <div class="status-indicator" id="statusIndicator">
+                <span class="status-dot" id="statusDot"></span>
+                <span id="statusText">Disconnected</span>
+            </div>
+        </header>
+
+        <!-- Quick Actions -->
+        <section class="quick-actions">
+            <h2>⚡ Quick Actions</h2>
+            <div class="action-grid">
+                <button class="action-btn" id="scanSniBtn" onclick="startScan('sni')">
+                    🔍 Scan SNI Domains
+                </button>
+                <button class="action-btn" id="scanSshBtn" onclick="startScan('ssh')">
+                    🔐 Scan SSH Servers
+                </button>
+                <button class="action-btn" id="testBypassBtn" onclick="startScan('bypass')">
+                    🚀 Test Bypass
+                </button>
+                <button class="action-btn success" id="useBestBtn" onclick="useBestConfig()">
+                    ⭐ Use Best Config
+                </button>
+            </div>
+        </section>
+
+        <!-- Manual Configuration -->
+        <section class="manual-config">
+            <h2>🛠️ Manual Configuration</h2>
+            <div class="config-form">
+                <div class="form-group">
+                    <label for="sniDomain">SNI Domain:</label>
+                    <input type="text" id="sniDomain" placeholder="free.facebook.com" value="">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="sshHost">SSH Host:</label>
+                        <input type="text" id="sshHost" placeholder="sg-1.openssh.net" value="">
+                    </div>
+                    <div class="form-group">
+                        <label for="sshPort">SSH Port:</label>
+                        <input type="number" id="sshPort" placeholder="22" value="22">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="sshUser">SSH User:</label>
+                        <input type="text" id="sshUser" placeholder="username" value="">
+                    </div>
+                    <div class="form-group">
+                        <label for="sshPass">SSH Password:</label>
+                        <input type="password" id="sshPass" placeholder="password" value="">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button class="btn start-btn" id="startTunnelBtn" onclick="startTunnel()">
+                        🚀 Start Tunnel
+                    </button>
+                    <button class="btn stop-btn" id="stopTunnelBtn" onclick="stopTunnel()" disabled>
+                        ⏹️ Stop Tunnel
+                    </button>
+                    <button class="btn test-btn" id="testConnBtn" onclick="testConnection()" disabled>
+                        🔗 Test Connection
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section class="results-section">
+            <h2>📊 Scan Results</h2>
+            
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab-btn active" onclick="showTab('sni')">SNI Domains</button>
+                <button class="tab-btn" onclick="showTab('ssh')">SSH Servers</button>
+                <button class="tab-btn" onclick="showTab('working')">Working Combos</button>
+            </div>
+
+            <!-- SNI Results -->
+            <div class="tab-content active" id="sniTab">
+                <div class="results-grid" id="sniResults">
+                    <div class="no-results">No SNI domains scanned yet. Click "Scan SNI Domains" to start.</div>
+                </div>
+            </div>
+
+            <!-- SSH Results -->
+            <div class="tab-content" id="sshTab">
+                <div class="results-grid" id="sshResults">
+                    <div class="no-results">No SSH servers scanned yet. Click "Scan SSH Servers" to start.</div>
+                </div>
+            </div>
+
+            <!-- Working Combinations -->
+            <div class="tab-content" id="workingTab">
+                <div class="results-grid" id="workingResults">
+                    <div class="no-results">No working combinations found yet. Click "Test Bypass" to start.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Live Logs -->
+        <section class="logs-section">
+            <h2>📜 Live Logs</h2>
+            <div class="logs-container">
+                <div class="logs-content" id="logsContent">
+                    <div class="log-entry">AI Auto Tunneler initialized. Ready to start scanning!</div>
+                </div>
+                <div class="logs-controls">
+                    <button class="btn" onclick="clearLogs()">🗑️ Clear</button>
+                    <button class="btn" onclick="refreshLogs()">🔄 Refresh</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Connection Info -->
+        <section class="connection-info" id="connectionInfo" style="display: none;">
+            <h2>🌐 Connection Information</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <strong>SOCKS Proxy:</strong>
+                    <span id="socksInfo">127.0.0.1:9092</span>
+                </div>
+                <div class="info-item">
+                    <strong>Status:</strong>
+                    <span id="connStatus">Connected</span>
+                </div>
+                <div class="info-item">
+                    <strong>Current IP:</strong>
+                    <span id="currentIp">Checking...</span>
+                </div>
+                <div class="info-item">
+                    <strong>Speed:</strong>
+                    <span id="connSpeed">Testing...</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>💡 Made with ❤️ for Termux • AI-Powered Free Internet</p>
+            <p>🔧 Configure your browser to use SOCKS proxy 127.0.0.1:9092 when tunnel is active</p>
+        </footer>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p id="loadingText">Processing...</p>
+        </div>
+    </div>
+
+    <script src="/assets/script.js"></script>
+</body>
+</html>
