@@ -1,0 +1,92 @@
+{
+  "auto_config_version": "1.1.0",
+  "generated_at": "2025-06-27T17:26:50.737821",
+  "environment": {
+    "hostname": "72075dee2581",
+    "cpu_count": "4",
+    "memory_info": {
+      "total": "30Gi",
+      "used": "9.2Gi",
+      "free": "6.0Gi"
+    },
+    "storage_info": {
+      "total": "1.0T",
+      "used": "67G",
+      "free": "958G"
+    },
+    "battery_info": {
+      "level": 100,
+      "status": "unknown",
+      "temperature": "unknown"
+    },
+    "location_info": {
+      "country": "unknown",
+      "city": "unknown"
+    },
+    "connectivity": {
+      "type": "unknown",
+      "mobile_network": "unknown"
+    }
+  },
+  "network": {
+    "interfaces": [],
+    "default_gateway": "unknown",
+    "dns_servers": [
+      "172.31.0.2"
+    ],
+    "public_ip": "44.246.195.12",
+    "connection_speed": {
+      "download": "unknown",
+      "upload": "unknown",
+      "ping": "unknown"
+    },
+    "ping_tests": {
+      "average": 100
+    }
+  },
+  "operator": {
+    "detected_operator": "telkomsel",
+    "country": "United States",
+    "connection_type": "unknown",
+    "operator_specific_settings": {
+      "preferred_ports": [
+        80,
+        443,
+        8080
+      ],
+      "sni_domains": [
+        "free.facebook.com",
+        "www.facebook.com",
+        "cdn.whatsapp.net"
+      ],
+      "ssh_regions": [
+        "singapore",
+        "indonesia"
+      ],
+      "timeout_multiplier": 1.0
+    },
+    "isp": "Amazon.com, Inc."
+  },
+  "optimal_settings": {
+    "recommended_sni_domains": [
+      "free.facebook.com",
+      "www.facebook.com",
+      "cdn.whatsapp.net"
+    ],
+    "recommended_ssh_servers": [],
+    "optimal_ports": [],
+    "timeout_settings": {
+      "connection_timeout": 10.0,
+      "ssh_timeout": 20.0,
+      "http_timeout": 12.5
+    },
+    "performance_settings": {
+      "max_concurrent_scans": 8,
+      "scan_timeout": 10,
+      "retry_attempts": 3,
+      "batch_size": 8
+    },
+    "security_settings": {}
+  },
+  "auto_apply": true
+}
