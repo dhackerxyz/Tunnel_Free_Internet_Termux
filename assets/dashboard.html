@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🤖 AI Auto Tunneler - Dashboard</title>
+    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="stylesheet" href="/assets/dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2>🤖 AI Tunneler</h2>
+                <p>Enhanced Dashboard</p>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="menu-item active" data-tab="overview">
+                    <span class="icon">📊</span>
+                    <span>Overview</span>
+                </li>
+                <li class="menu-item" data-tab="monitor">
+                    <span class="icon">📈</span>
+                    <span>Monitor</span>
+                </li>
+                <li class="menu-item" data-tab="tunnels">
+                    <span class="icon">🔧</span>
+                    <span>Tunnels</span>
+                </li>
+                <li class="menu-item" data-tab="scanner">
+                    <span class="icon">🔍</span>
+                    <span>Scanner</span>
+                </li>
+                <li class="menu-item" data-tab="settings">
+                    <span class="icon">⚙️</span>
+                    <span>Settings</span>
+                </li>
+                <li class="menu-item" data-tab="device">
+                    <span class="icon">📱</span>
+                    <span>Device Info</span>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <header class="top-bar">
+                <div class="top-bar-left">
+                    <h1 id="currentPageTitle">Dashboard Overview</h1>
+                    <p class="breadcrumb">Home / <span id="currentBreadcrumb">Overview</span></p>
+                </div>
+                <div class="top-bar-right">
+                    <div class="system-status" id="systemStatus">
+                        <span class="status-dot" id="statusDot"></span>
+                        <span id="statusText">Initializing...</span>
+                    </div>
+                    <button class="btn-auto-config" onclick="runAutoConfig()">
+                        🤖 Auto Config
+                    </button>
+                </div>
+            </header>
+
+            <!-- Dashboard Content Tabs -->
+            
+            <!-- Overview Tab -->
+            <div class="tab-content active" id="overviewTab">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">🌐</div>
+                        <div class="stat-content">
+                            <h3 id="tunnelStatus">Disconnected</h3>
+                            <p>Tunnel Status</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📊</div>
+                        <div class="stat-content">
+                            <h3 id="totalScans">0</h3>
+                            <p>Total Scans</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🔐</div>
+                        <div class="stat-content">
+                            <h3 id="workingCombos">0</h3>
+                            <p>Working Combos</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⚡</div>
+                        <div class="stat-content">
+                            <h3 id="systemUptime">00:00:00</h3>
+                            <p>System Uptime</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <!-- Quick Actions -->
+                    <div class="dashboard-card">
+                        <h3>⚡ Quick Actions</h3>
+                        <div class="quick-actions-grid">
+                            <button class="quick-action-btn" onclick="quickScan('sni')">
+                                🔍 Quick SNI Scan
+                            </button>
+                            <button class="quick-action-btn" onclick="quickScan('ssh')">
+                                🔐 Quick SSH Scan
+                            </button>
+                            <button class="quick-action-btn" onclick="testBestCombo()">
+                                ⭐ Use Best Config
+                            </button>
+                            <button class="quick-action-btn" onclick="emergencyStop()">
+                                🛑 Emergency Stop
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- System Health -->
+                    <div class="dashboard-card">
+                        <h3>🏥 System Health</h3>
+                        <div class="health-metrics">
+                            <div class="health-item">
+                                <span>CPU Usage</span>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="cpuProgress" style="width: 0%"></div>
+                                </div>
+                                <span id="cpuValue">0%</span>
+                            </div>
+                            <div class="health-item">
+                                <span>Memory Usage</span>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="memoryProgress" style="width: 0%"></div>
+                                </div>
+                                <span id="memoryValue">0%</span>
+                            </div>
+                            <div class="health-item" id="batteryHealth">
+                                <span>Battery Level</span>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="batteryProgress" style="width: 100%"></div>
+                                </div>
+                                <span id="batteryValue">100%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="dashboard-card">
+                        <h3>📈 Recent Activity</h3>
+                        <div class="activity-list" id="recentActivity">
+                            <div class="activity-item">
+                                <span class="activity-time">Just now</span>
+                                <span class="activity-desc">System initialized</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Monitor Tab -->
+            <div class="tab-content" id="monitorTab">
+                <div class="monitor-grid">
+                    <!-- Connection Chart -->
+                    <div class="chart-card">
+                        <h3>📊 Connection Performance</h3>
+                        <canvas id="connectionChart"></canvas>
+                    </div>
+
+                    <!-- Network Status -->
+                    <div class="dashboard-card">
+                        <h3>🌐 Network Status</h3>
+                        <div class="network-info" id="networkInfo">
+                            <div class="network-item">
+                                <span>Public IP:</span>
+                                <span id="publicIp">Detecting...</span>
+                            </div>
+                            <div class="network-item">
+                                <span>ISP:</span>
+                                <span id="ispInfo">Detecting...</span>
+                            </div>
+                            <div class="network-item">
+                                <span>Location:</span>
+                                <span id="locationInfo">Detecting...</span>
+                            </div>
+                            <div class="network-item">
+                                <span>Operator:</span>
+                                <span id="operatorInfo">Auto-detecting...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div class="tab-content" id="settingsTab">
+                <div class="settings-content">
+                    <!-- Auto Configuration -->
+                    <div class="dashboard-card">
+                        <h3>🤖 Auto Configuration</h3>
+                        <div class="auto-config-section">
+                            <div class="config-status" id="autoConfigStatus">
+                                <span class="config-indicator">⚙️</span>
+                                <span>Auto-configuration ready</span>
+                                <button class="btn btn-primary" onclick="runAutoConfig()">
+                                    🚀 Run Auto Config
+                                </button>
+                            </div>
+                            <div class="config-results" id="autoConfigResults" style="display: none;">
+                                <h4>Configuration Results:</h4>
+                                <div class="config-details" id="configDetails"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Performance Settings -->
+                    <div class="dashboard-card">
+                        <h3>⚡ Performance Settings</h3>
+                        <div class="settings-form">
+                            <div class="form-group">
+                                <label for="maxConcurrentScans">Max Concurrent Scans:</label>
+                                <input type="range" id="maxConcurrentScans" min="1" max="20" value="5" class="form-range">
+                                <span id="maxConcurrentScansValue">5</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="scanTimeout">Scan Timeout (seconds):</label>
+                                <input type="range" id="scanTimeout" min="5" max="30" value="10" class="form-range">
+                                <span id="scanTimeoutValue">10</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Device Info Tab -->
+            <div class="tab-content" id="deviceTab">
+                <div class="device-content">
+                    <!-- Device Overview -->
+                    <div class="dashboard-card">
+                        <h3>📱 Device Information</h3>
+                        <div class="device-info" id="deviceInfo">
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <span class="info-label">Device Model:</span>
+                                    <span class="info-value" id="deviceModel">Detecting...</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Android Version:</span>
+                                    <span class="info-value" id="androidVersion">Detecting...</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Architecture:</span>
+                                    <span class="info-value" id="deviceArch">Detecting...</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Termux Version:</span>
+                                    <span class="info-value" id="termuxVersion">Detecting...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Battery Information -->
+                    <div class="dashboard-card">
+                        <h3>🔋 Battery Status</h3>
+                        <div class="battery-info" id="batteryInfo">
+                            <div class="battery-details">
+                                <div class="battery-item">
+                                    <span>Level:</span>
+                                    <span id="batteryLevel">100%</span>
+                                </div>
+                                <div class="battery-item">
+                                    <span>Status:</span>
+                                    <span id="batteryStatus">Unknown</span>
+                                </div>
+                                <div class="battery-item">
+                                    <span>Temperature:</span>
+                                    <span id="batteryTemp">Unknown</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p id="loadingText">Loading...</p>
+        </div>
+    </div>
+
+    <script src="/assets/dashboard.js"></script>
+</body>
+</html>

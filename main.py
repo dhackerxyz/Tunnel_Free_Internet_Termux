@@ -28,6 +28,7 @@ from core.sni_scraper import SNIScraper
 from core.ssh_scraper import SSHScraperImproved as SSHScraper
 from core.test_bypass import BypassTester
 from core.checker import ConnectionChecker
+from core.auto_config import AutoConfigurator, perform_auto_configuration
 
 # Global variables
 current_tunnel_process = None
@@ -560,6 +561,64 @@ async def get_logs(lines: int = QueryParam(50, description="Number of log lines 
             "logs": [f"Error reading logs: {str(e)}"],
             "error": str(e)
         }
+
+@app.post("/api/auto-config", tags=["Configuration"], summary="Run Auto Configuration")
+async def run_auto_configuration():
+    """
+    Run intelligent auto-configuration for optimal tunnel settings
+    
+    Detects environment, network, operator and generates optimal configuration
+    """
+    try:
+        log_message("Starting auto-configuration...")
+        
+        # Run auto-configuration
+        results = await perform_auto_configuration()
+        
+        log_message("Auto-configuration completed successfully")
+        
+        return {
+            "status": "success",
+            "message": "Auto-configuration completed",
+            "results": results,
+            "timestamp": datetime.now().isoformat()
+        }
+        
+    except Exception as e:
+        log_message(f"Auto-configuration failed: {str(e)}")
+        return {
+            "status": "error",
+            "message": f"Auto-configuration failed: {str(e)}",
+            "timestamp": datetime.now().isoformat()
+        }
+
+@app.get("/api/termux/battery", tags=["Termux API"], summary="Get Battery Information")
+async def get_termux_battery():
+    """Get battery status using Termux API"""
+    try:
+        result = subprocess.getoutput("termux-battery-status")
+        if result and "{" in result:
+            battery_data = json.loads(result)
+            return battery_data
+        else:
+            return {
+                "percentage": 100,
+                "status": "UNKNOWN",
+                "health": "GOOD",
+                "temperature": 25.0,
+                "plugged": "UNPLUGGED"
+            }
+    except Exception as e:
+        return {
+            "error": str(e),
+            "percentage": 100,
+            "status": "UNKNOWN"
+        }
+
+@app.get("/dashboard", tags=["Web UI"], summary="Enhanced Dashboard")
+async def enhanced_dashboard():
+    """Serve the enhanced dashboard interface"""
+    return FileResponse('assets/dashboard.html')
 
 # Background task functions
 async def scan_sni_domains(limit: int):
