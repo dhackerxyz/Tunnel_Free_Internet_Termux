@@ -592,28 +592,6 @@ async def run_auto_configuration():
             "timestamp": datetime.now().isoformat()
         }
 
-@app.get("/api/termux/battery", tags=["Termux API"], summary="Get Battery Information")
-async def get_termux_battery():
-    """Get battery status using Termux API"""
-    try:
-        result = subprocess.getoutput("termux-battery-status")
-        if result and "{" in result:
-            battery_data = json.loads(result)
-            return battery_data
-        else:
-            return {
-                "percentage": 100,
-                "status": "UNKNOWN",
-                "health": "GOOD",
-                "temperature": 25.0,
-                "plugged": "UNPLUGGED"
-            }
-    except Exception as e:
-        return {
-            "error": str(e),
-            "percentage": 100,
-            "status": "UNKNOWN"
-        }
 
 @app.get("/dashboard", tags=["Web UI"], summary="Enhanced Dashboard")
 async def enhanced_dashboard():

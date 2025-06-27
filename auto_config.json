@@ -1,13 +1,13 @@
 {
   "auto_config_version": "1.1.0",
-  "generated_at": "2025-06-27T17:06:11.239093",
+  "generated_at": "2025-06-27T17:11:02.877385",
   "environment": {
     "hostname": "72075dee2581",
     "cpu_count": "4",
     "memory_info": {
       "total": "30Gi",
-      "used": "9.2Gi",
-      "free": "5.9Gi"
+      "used": "9.1Gi",
+      "free": "6.0Gi"
     },
     "storage_info": {
       "total": "1.0T",
