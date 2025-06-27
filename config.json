@@ -1,0 +1,24 @@
+{
+  "_metadata": {
+    "version": "1.0.0",
+    "created": "2025-06-27",
+    "description": "AI Auto Tunneler - Working configurations database"
+  },
+  "_schema": {
+    "working_combinations": [
+      {
+        "sni_domain": "string - SNI domain used for bypass",
+        "ssh_host": "string - SSH server hostname/IP",
+        "ssh_port": "number - SSH server port",
+        "ssh_user": "string - SSH username", 
+        "ssh_pass": "string - SSH password",
+        "success": "boolean - Whether combination worked",
+        "speed": "string - Connection speed rating",
+        "timestamp": "string - ISO timestamp when tested",
+        "operator": "string - Mobile operator if known",
+        "location": "string - Server location",
+        "notes": "string - Additional notes"
+      }
+    ]
+  }
+}
